@@ -13,16 +13,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
-  void didUpdateWidget(covariant HomePage oldWidget) {
-    // TODO: implement didUpdateWidget
-    super.didUpdateWidget(oldWidget);
-    fetchPosts();
-  }
-
   List _items = [];
   String url =
-      "https://notiontech.info/demo/book-technician/beta/api/show/service-list?customer_id=41&category_id=11";
+      "https://notiontech.co.in/demo/book-technician/beta/api/show/service-list?customer_id=41&category_id=11";
 
   Future<void> fetchPosts() async {
     try {
@@ -30,16 +23,14 @@ class _HomePageState extends State<HomePage> {
           await get(Uri.parse(url), headers: {'token': 'Booktechnician123'});
       final data = jsonDecode(response.body); // loads string
 
-      _items = data["data"];
-
       setState(() {
-        fetchPosts();
+        _items = data["data"];
       });
 
-      for (int i = 0; i < _items.length; i++) {
-        print("item :  ${_items[i]["id"]}");
-        print("service name :  ${_items[i]["name"]}");
-      }
+      //   for (int i = 0; i < _items.length; i++) {
+      //     print("item :  ${_items[i]["id"]}");
+      //     print("service name :  ${_items[i]["name"]}");
+      //   }
     } catch (err) {}
   }
 
@@ -47,14 +38,11 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    setState(() {
-      fetchPosts();
-    });
+    fetchPosts();
   }
 
   @override
   Widget build(BuildContext context) {
-    fetchPosts();
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(
@@ -142,7 +130,7 @@ class _HomePageState extends State<HomePage> {
                                   onPressed: () {
                                     post(
                                         Uri.parse(
-                                            "https://notiontech.info/demo/book-technician/beta/api/add/cart"),
+                                            "https://notiontech.co.in/demo/book-technician/beta/api/add/cart"),
                                         body: {
                                           "service_id": _items[index]["terms"]
                                                   [0]["service_id"]
