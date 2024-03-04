@@ -49,16 +49,9 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  fetchPosts();
-                });
-              },
-              child: Text("click to refresh")),
           Container(
             height: 1000,
-            padding: EdgeInsets.only(bottom: 100),
+            padding: EdgeInsets.only(bottom: 200),
             child: ListView.separated(
               separatorBuilder: (context, index) => SizedBox(
                 height: 10,
