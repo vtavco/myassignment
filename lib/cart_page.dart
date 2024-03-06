@@ -16,6 +16,7 @@ class _CartPageState extends State<CartPage> {
   List _cartList = [];
   bool isEmptyCart = false;
   Map emptyMap = {};
+  String? total;
 
   String url =
       "https://notiontech.co.in/demo/book-technician/beta/api/show/cart?customer_id=41";
@@ -31,11 +32,33 @@ class _CartPageState extends State<CartPage> {
     }
   }
 
+  Future<void> fetchTotal() async {
+    final response = await post(
+        Uri.parse(
+            "https://notiontech.co.in/demo/book-technician/beta/api/cart/total"),
+        body: {
+          "customer_id": "41",
+        },
+        headers: {
+          'token': 'Booktechnician123'
+        });
+    Map custTotal = jsonDecode(response.body);
+    print(custTotal["data"]["sub_amount"]
+        .toString()); // See log to check item removed
+
+    setState(() {
+      total = custTotal["data"]["sub_amount"].toString();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
 
     fetchCart();
+    fetchTotal();
+
+    setState(() {});
   }
 
   @override
@@ -55,7 +78,7 @@ class _CartPageState extends State<CartPage> {
                     children: [
                       Container(
                         padding: EdgeInsets.only(top: 0, left: 10, right: 10),
-                        height: MediaQuery.of(context).size.height * (2.95 / 4),
+                        height: MediaQuery.of(context).size.height * (2.8 / 4),
                         child: _cartList.isEmpty
                             ? Center(
                                 child: Text("No item available in cart"),
@@ -131,7 +154,8 @@ class _CartPageState extends State<CartPage> {
                                                                       'Booktechnician123'
                                                                 });
                                                             print(response.body
-                                                                .toString()); // See log to check item added
+                                                                .toString());
+                                                            fetchTotal(); // See log to check item added
                                                             setState(() {});
                                                           },
                                                           child: Text("+")),
@@ -155,7 +179,7 @@ class _CartPageState extends State<CartPage> {
                                                                 });
                                                             print(response.body
                                                                 .toString()); // See log to check item removed
-
+                                                            fetchTotal();
                                                             setState(() {});
                                                           },
                                                           child: Text("-"))
@@ -173,6 +197,18 @@ class _CartPageState extends State<CartPage> {
                                 itemCount: _cartList.length,
                               ),
                       ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              child: Text("Buy"),
+                            ),
+                            Text("Total : $total Rs")
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 );
