@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:assignment/buy_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -63,79 +64,82 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        FutureBuilder(
-            future: fetchCart(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else {
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(top: 0, left: 10, right: 10),
-                        height: MediaQuery.of(context).size.height * (2.8 / 4),
-                        child: _cartList.isEmpty
-                            ? Center(
-                                child: Text("No item available in cart"),
-                              )
-                            : ListView.separated(
-                                shrinkWrap: true,
-                                separatorBuilder: (context, index) => SizedBox(
-                                  height: 10,
-                                ),
-                                itemBuilder: (context, index) {
-                                  return Card(
-                                    elevation: 5,
-                                    child: Container(
-                                      padding: EdgeInsets.all(5),
-                                      child: Expanded(
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  2,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    _cartList[index]
-                                                        ["service_name"],
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  Text(
-                                                      "Price : ${_cartList[index]["price"].toString()}"),
-                                                  Text(
-                                                      "Quantity : ${_cartList[index]["quantity"].toString()}"),
-                                                ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          FutureBuilder(
+              future: fetchCart(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(top: 0, left: 10, right: 10),
+                          height:
+                              MediaQuery.of(context).size.height * (2.95 / 4),
+                          child: _cartList.isEmpty
+                              ? Center(
+                                  child: Text("No item available in cart"),
+                                )
+                              : ListView.separated(
+                                  shrinkWrap: true,
+                                  separatorBuilder: (context, index) =>
+                                      SizedBox(
+                                    height: 10,
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    return Card(
+                                      elevation: 5,
+                                      child: Container(
+                                        padding: EdgeInsets.all(5),
+                                        child: Expanded(
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    2,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      _cartList[index]
+                                                          ["service_name"],
+                                                      style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    Text(
+                                                        "Price : ${_cartList[index]["price"].toString()}"),
+                                                    Text(
+                                                        "Quantity : ${_cartList[index]["quantity"].toString()}"),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                      "Rating : ${_cartList[index]["service"]["rating"].toString()}"),
-                                                  Text(
-                                                      "Status : ${_cartList[index]["service"]["status"]}"),
-                                                  Row(
-                                                    children: [
-                                                      ElevatedButton(
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                        "Rating : ${_cartList[index]["service"]["rating"].toString()}"),
+                                                    Text(
+                                                        "Status : ${_cartList[index]["service"]["status"]}"),
+                                                    Row(
+                                                      children: [
+                                                        ElevatedButton(
                                                           onPressed: () async {
                                                             var response =
                                                                 await post(
@@ -158,8 +162,22 @@ class _CartPageState extends State<CartPage> {
                                                             fetchTotal(); // See log to check item added
                                                             setState(() {});
                                                           },
-                                                          child: Text("+")),
-                                                      ElevatedButton(
+                                                          child: Text("+"),
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .blue,
+                                                                  foregroundColor:
+                                                                      Colors
+                                                                          .white,
+                                                                  shape:
+                                                                      RoundedRectangleBorder()),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        ElevatedButton(
                                                           onPressed: () async {
                                                             var response =
                                                                 await post(
@@ -182,39 +200,62 @@ class _CartPageState extends State<CartPage> {
                                                             fetchTotal();
                                                             setState(() {});
                                                           },
-                                                          child: Text("-"))
-                                                    ],
-                                                  )
-                                                ],
+                                                          child: Text("-"),
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .red,
+                                                                  foregroundColor:
+                                                                      Colors
+                                                                          .white,
+                                                                  shape:
+                                                                      RoundedRectangleBorder()),
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                },
-                                itemCount: _cartList.length,
-                              ),
-                      ),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: Text("Buy"),
-                            ),
-                            Text("Total : $total Rs")
-                          ],
+                                    );
+                                  },
+                                  itemCount: _cartList.length,
+                                ),
                         ),
-                      )
-                    ],
-                  ),
-                );
-              }
-            }),
-      ],
+                        Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width / 2.5,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) => BuyPage()));
+                                  },
+                                  child: Text("Buy"),
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.blue,
+                                      foregroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder()),
+                                ),
+                              ),
+                              Text("Total : $total Rs")
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                }
+              }),
+        ],
+      ),
     );
   }
 }
