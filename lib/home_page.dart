@@ -120,6 +120,10 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                                 ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.blue,
+                                      foregroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder()),
                                   onPressed: () {
                                     post(
                                         Uri.parse(

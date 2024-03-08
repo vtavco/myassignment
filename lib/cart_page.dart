@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:assignment/Constants.dart';
 import 'package:assignment/buy_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +65,7 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {});
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -163,55 +165,40 @@ class _CartPageState extends State<CartPage> {
                                                             setState(() {});
                                                           },
                                                           child: Text("+"),
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .blue,
-                                                                  foregroundColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  shape:
-                                                                      RoundedRectangleBorder()),
+                                                          style: Constants
+                                                              .blueButton,
                                                         ),
                                                         SizedBox(
                                                           width: 10,
                                                         ),
                                                         ElevatedButton(
-                                                          onPressed: () async {
-                                                            var response =
-                                                                await post(
-                                                                    Uri.parse(
-                                                                        "https://notiontech.co.in/demo/book-technician/beta/api/add-remove/quantity/cart"),
-                                                                    body: {
-                                                                  "cart_id": _cartList[
-                                                                              index]
-                                                                          ["id"]
-                                                                      .toString(),
-                                                                  "status":
-                                                                      "Remove"
-                                                                },
-                                                                    headers: {
-                                                                  'token':
-                                                                      'Booktechnician123'
-                                                                });
-                                                            print(response.body
-                                                                .toString()); // See log to check item removed
-                                                            fetchTotal();
-                                                            setState(() {});
-                                                          },
-                                                          child: Text("-"),
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .red,
-                                                                  foregroundColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  shape:
-                                                                      RoundedRectangleBorder()),
-                                                        )
+                                                            onPressed:
+                                                                () async {
+                                                              var response =
+                                                                  await post(
+                                                                      Uri.parse(
+                                                                          "https://notiontech.co.in/demo/book-technician/beta/api/add-remove/quantity/cart"),
+                                                                      body: {
+                                                                    "cart_id": _cartList[index]
+                                                                            [
+                                                                            "id"]
+                                                                        .toString(),
+                                                                    "status":
+                                                                        "Remove"
+                                                                  },
+                                                                      headers: {
+                                                                    'token':
+                                                                        'Booktechnician123'
+                                                                  });
+                                                              print(response
+                                                                  .body
+                                                                  .toString()); // See log to check item removed
+                                                              fetchTotal();
+                                                              setState(() {});
+                                                            },
+                                                            child: Text("-"),
+                                                            style: Constants
+                                                                .redButton)
                                                       ],
                                                     )
                                                   ],
@@ -234,6 +221,7 @@ class _CartPageState extends State<CartPage> {
                                 width: MediaQuery.of(context).size.width / 2.5,
                                 child: ElevatedButton(
                                   onPressed: () {
+                                    setState(() {});
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (context) => BuyPage()));
